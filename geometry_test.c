@@ -36,6 +36,7 @@ START_TEST(test_triangle_area)
     c.y = 4;
     testanswer = coord_2d_area_triangle(&a,&b,&c);
     ck_assert(testanswer == 6);
+    /* This is the classic 3-4-5 triangle. */
 }
 END_TEST
 	
