@@ -15,6 +15,31 @@
 
 #include "geometry.h"
 
+START_TEST(test_triangle_area)
+{
+    coord_2d_t a;
+    coord_2d_t b;
+    coord_2d_t c;
+    a.x = b.x = c.x = 0;
+    a.y = b.y = c.x = 0;
+    int testanswer = coord_2d_area_triangle(&a,&b,&c);
+    ck_assert(testanswer == 0);
+    a.x = b.x = c.x = 1;
+    a.y = b.y = c.x = 1;
+    testanswer = coord_2d_area_triangle(&a,&b,&c);
+    ck_assert(testanswer == 0);
+    a.x = 0;
+    a.y = 0;
+    b.x = 3;
+    b.y = 0;
+    c.x = 0;
+    c.y = 4;
+    testanswer = coord_2d_area_triangle(&a,&b,&c);
+    ck_assert(testanswer == 6);
+}
+END_TEST
+	
+
 /* coord_2d_eq Test */
 START_TEST(test_2d_eq)
 {
@@ -172,16 +197,39 @@ Suite* coord_2d_suite(void)
 
 }
 
+/* triangle_area Test Suite */
+Suite* triangle_area_suite(void)
+{
+
+    /* Create Suite */
+    Suite* t_suite = suite_create("triangle_area");
+
+    /* Setup Test Cases */
+    TCase* tc_tria = tcase_create("triangle_area");
+    tcase_add_test(tc_tria, test_triangle_area);
+
+    /* Add Cases to Suite */
+    suite_add_tcase(t_suite, tc_tria);
+
+    /* Return Suite */
+    return t_suite;
+
+}
+
 /* main: run test suites and set exit status */
 int main(void){
 
     int failed = 0;
     Suite* s = coord_2d_suite();
+    Suite* t_suite = triangle_area_suite();
     SRunner* sr = srunner_create(s);
+    SRunner* sra = srunner_create(t_suite);
     srunner_run_all(sr, CK_VERBOSE);
+    srunner_run_all(sra, CK_VERBOSE);
     failed = srunner_ntests_failed(sr);
+    failed = srunner_ntests_failed(sra);
     srunner_free(sr);
-
+    srunner_free(sra);
     return (failed ? EXIT_FAILURE : EXIT_SUCCESS);
 
 }
