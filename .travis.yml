@@ -1,4 +1,4 @@
 compiler:
-  - clang
   - gcc
 language: c
+script: make && make test
